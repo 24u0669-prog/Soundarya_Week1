@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlueWave Bank</title>
+    <style>
+        :root {
+            --bg1: #071521;
+            --bg2: #11253f;
+            --panel: rgba(17, 35, 56, 0.9);
+            --panel-2: rgba(15, 25, 40, 0.9);
+            --primary: #77d9ff;
+            --secondary: #9a90ff;
+            --success: #7ef1b7;
+            --text: #ecf7ff;
+            --muted: #b5c7d9;
+            --line: rgba(255,255,255,0.14);
+            --shadow: 0 28px 60px rgba(0,0,0,0.35);
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .page {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 30px 22px 50px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+            background: rgba(12,22,35,0.72);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(12px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .brand-mark {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #06131e;
+        }
+
+        .account-chip {
+            padding: 9px 14px;
+            background: rgba(119, 217, 255, 0.12);
+            border: 1px solid rgba(119,217,255,0.3);
+            border-radius: 999px;
+            color: var(--text);
+            font-size: 0.84rem;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.4fr 0.9fr;
+            gap: 28px;
+            margin-top: 28px;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(17, 34, 55, 0.92), rgba(14, 24, 39, 0.96));
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-text {
+            padding: 38px 32px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: rgba(119, 217, 255, 0.12);
+            border: 1px solid rgba(119, 217, 255, 0.35);
+            color: var(--primary);
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 5vw, 4.1rem);
+            line-height: 1.04;
+            margin: 18px 0 14px;
+        }
+
+        .hero-text p {
+            font-size: 1.08rem;
+            line-height: 1.8;
+            color: var(--muted);
+            max-width: 610px;
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        button {
+            border: none;
+            border-radius: 12px;
+            padding: 14px 22px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover { transform: translateY(-2px); }
+
+        button:focus-visible {
+            outline: 3px solid var(--success);
+            outline-offset: 3px;
+        }
+
+        .primary {
+            background: #071521;
+            border: 1px solid rgba(119, 217, 255, 0.65);
+            color: var(--primary);
+        }
+
+        .secondary {
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--text);
+        }
+
+        .bank-card {
+            padding: 22px;
+        }
+
+        .card-shell {
+            position: relative;
+            min-height: 220px;
+            border-radius: 22px;
+            padding: 24px 20px 18px;
+            background: linear-gradient(135deg, rgba(119,217,255,0.15), rgba(154,144,255,0.18));
+            border: 1px solid rgba(255,255,255,0.18);
+            overflow: hidden;
+        }
+
+        .card-shell::before {
+            content: "";
+            position: absolute;
+            right: -30px;
+            top: -30px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .chip {
+            width: 42px;
+            height: 28px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f7df9f, #d0ad5b);
+            margin-bottom: 28px;
+        }
+
+        .card-no {
+            font-size: 1.15rem;
+            letter-spacing: 0.18em;
+            margin-top: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-meta {
+            margin-top: 28px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.74rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #ddeaf8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .balance-box {
+            margin-top: 24px;
+            padding-top: 4px;
+        }
+
+        .small-label {
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .balance-value {
+            font-size: clamp(1.8rem, 2vw, 2.7rem);
+            font-weight: 800;
+            margin-top: 8px;
+        }
+
+        .stats {
+            margin-top: 28px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .stat-box {
+            padding: 20px 18px;
+        }
+
+        .stat-box .small-label {
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .stat-box .value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .stat-box p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .content-grid {
+            margin-top: 28px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+        }
+
+        .section {
+            padding: 24px 20px;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .section-head h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .action-card {
+            padding: 18px 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--line);
+            min-height: 82px;
+        }
+
+        .action-card strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .transactions {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .transactions li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 14px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--line);
+        }
+
+        .txn-name {
+            display: block;
+            font-weight: 700;
+        }
+
+        .txn-time {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        .credit { color: var(--success); font-weight: 700; }
+        .debit { color: #ff9090; font-weight: 700; }
+
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .mini-card {
+            border-radius: 16px;
+            border: 1px solid var(--line);
+            background: linear-gradient(135deg, rgba(119,217,255,0.1), rgba(154,144,255,0.12));
+            padding: 18px 16px;
+        }
+
+        .mini-card strong { display: block; margin-bottom: 8px; }
+
+        .action-card {
+            width: 100%;
+            text-align: left;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .action-card span { color: var(--muted); }
+
+        .action-card:nth-child(1) {
+            background: #0b3440;
+            border-color: #1a7180;
+        }
+
+        .action-card:nth-child(2) {
+            background: #172d54;
+            border-color: #31558e;
+        }
+
+        .action-card:nth-child(3) {
+            background: #49321b;
+            border-color: #93672e;
+        }
+
+        .action-card:nth-child(4) {
+            background: #173b32;
+            border-color: #357a61;
+        }
+
+        .action-card:hover {
+            filter: brightness(1.2);
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            display: none;
+            place-items: center;
+            padding: 20px;
+            background: rgba(2, 9, 16, 0.76);
+            z-index: 10;
+        }
+
+        .modal-backdrop.is-open { display: grid; }
+
+        .modal {
+            width: min(100%, 460px);
+            padding: 26px;
+            background: #10243a;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .modal h2 { margin: 0; }
+
+        .close-modal {
+            padding: 9px 14px;
+            background: #071521;
+            border: 1px solid var(--line);
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .form-grid { display: grid; gap: 14px; }
+
+        .form-grid label {
+            display: grid;
+            gap: 7px;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .form-grid input, .form-grid select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #091a2b;
+            color: var(--text);
+            font: inherit;
+        }
+
+        .form-grid .primary { margin-top: 4px; }
+
+        .form-message {
+            min-height: 20px;
+            margin: 14px 0 0;
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .hero, .content-grid, .stats { grid-template-columns: 1fr; }
+            .action-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark">B</div>
+                <span>BLUEWAVE BANK</span>
+            </div>
+            <div class="account-chip">Secure Banking</div>
+        </header>
+
+        <section class="hero">
+            <div class="panel hero-text">
+                <div class="eyebrow">Digital Banking</div>
+                <h1>Banking made simple.</h1>
+                <p>Secure banking experiences, faster transfers, smarter savings, and complete control over your financial life.</p>
+                <div class="cta-row">
+                    <button class="primary" type="button" data-action="open-account">Open Account</button>
+                    <button class="secondary" type="button" data-action="manage">Manage Account</button>
+                </div>
+            </div>
+
+            <div class="panel bank-card">
+                <div class="card-shell">
+                    <div class="chip"></div>
+                    <div class="card-no" id="accountNumber">Create your account</div>
+                    <div class="card-meta">
+                        <span>Platinum</span>
+                        <span>VALID</span>
+                    </div>
+                </div>
+                <div class="balance-box">
+                    <div class="small-label">Current Balance</div>
+                    <div class="balance-value">₹0.00</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="panel stat-box">
+                <div class="small-label">Savings</div>
+                <div class="value" id="savingsValue">₹0.00</div>
+                <p>Available savings</p>
+            </div>
+            <div class="panel stat-box">
+                <div class="small-label">Monthly Income</div>
+                <div class="value">₹0.00</div>
+                <p>Created by you</p>
+            </div>
+            <div class="panel stat-box">
+                <div class="small-label">Cards</div>
+                <div class="value">0</div>
+                <p>Your active cards</p>
+            </div>
+        </section>
+
+        <section class="content-grid">
+            <div class="panel section">
+                <div class="section-head">
+                    <h3>Quick Actions</h3>
+                </div>
+                <div class="action-grid">
+                    <button class="action-card" type="button" data-action="deposit"><strong>Deposit</strong><span>Fast and secure</span></button>
+                    <button class="action-card" type="button" data-action="transfer"><strong>Fund Transfer</strong><span>Send instantly</span></button>
+                    <button class="action-card" type="button" data-action="withdraw"><strong>Withdraw</strong><span>Access your money</span></button>
+                    <button class="action-card" type="button" data-action="manage"><strong>Manage Account</strong><span>Update your profile</span></button>
+                </div>
+            </div>
+
+            <div class="panel section">
+                <div class="section-head">
+                    <h3>Payment Cards</h3>
+                </div>
+                <div class="cards-list">
+                    <div class="mini-card"><strong>Visa Platinum</strong><span>Premium card</span></div>
+                    <div class="mini-card"><strong>Master Gold</strong><span>Travel rewards</span></div>
+                    <div class="mini-card"><strong>Wallet Pro</strong><span>Digital payments</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-grid" style="margin-top: 24px;">
+            <div class="panel section">
+                <div class="section-head">
+                    <h3>Recent Transactions</h3>
+                </div>
+                <ul class="transactions"></ul>
+            </div>
+
+            <div class="panel section">
+                <div class="section-head">
+                    <h3>Account Holder</h3>
+                </div>
+                <div class="mini-card">
+                    <strong id="accountHolder">No account created</strong>
+                    <span id="accountType">Create an account to access the portal</span>
+                </div>
+                <div class="mini-card" style="margin-top: 14px;">
+                    <strong>Security</strong>
+                    <span>Protected • 2FA Enabled</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal-backdrop" id="actionModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal">
+            <div class="modal-head">
+                <h2 id="modalTitle">Banking action</h2>
+                <button class="close-modal" type="button" aria-label="Go back">← Back</button>
+            </div>
+            <form class="form-grid" id="actionForm"></form>
+            <p class="form-message" id="formMessage" role="status"></p>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('actionModal');
+        const form = document.getElementById('actionForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const formMessage = document.getElementById('formMessage');
+        const balanceElement = document.querySelector('.balance-value');
+        const transactionList = document.querySelector('.transactions');
+        const accountNumberElement = document.getElementById('accountNumber');
+        const accountHolderElement = document.getElementById('accountHolder');
+        const accountTypeElement = document.getElementById('accountType');
+        const savingsElement = document.getElementById('savingsValue');
+        let account = JSON.parse(localStorage.getItem('bluewaveAccount') || 'null');
+        let balance = account ? Number(account.balance) : 0;
+
+        const actionDetails = {
+            'open-account': {
+                title: 'Open a new account',
+                fields: '<label>Full name<input name="name" required placeholder="Enter your name"></label><label>Account type<select name="type"><option>Savings Account</option><option>Current Account</option></select></label><label>Mobile number<input name="mobile" required inputmode="numeric" placeholder="10-digit mobile number"></label><label>Opening amount (₹)<input name="amount" required type="number" min="0" step="0.01" value="0" placeholder="Enter opening amount"></label>',
+                submit: 'Create Account'
+            },
+            deposit: {
+                title: 'Deposit money',
+                fields: '<label>Amount (₹)<input name="amount" required type="number" min="1" step="0.01" placeholder="Enter amount"></label><label>Deposit source<input name="source" required placeholder="Salary, cash, cheque..."></label>',
+                submit: 'Deposit Amount'
+            },
+            withdraw: {
+                title: 'Withdraw money',
+                fields: '<label>Amount (₹)<input name="amount" required type="number" min="1" step="0.01" placeholder="Enter amount"></label><label>Purpose<input name="purpose" required placeholder="Reason for withdrawal"></label>',
+                submit: 'Withdraw Amount'
+            },
+            transfer: {
+                title: 'Fund transfer',
+                fields: '<label>Recipient account<input name="recipient" required placeholder="Account number or name"></label><label>Amount (₹)<input name="amount" required type="number" min="1" step="0.01" placeholder="Enter amount"></label><label>Note<input name="note" placeholder="Optional note"></label>',
+                submit: 'Transfer Funds'
+            },
+            manage: {
+                title: 'Manage account',
+                fields: '<label>Full name<input name="name" required value="John Carter"></label><label>Email address<input name="email" required type="email" placeholder="you@example.com"></label><label>Mobile number<input name="mobile" required inputmode="numeric" placeholder="10-digit mobile number"></label>',
+                submit: 'Save Changes'
+            }
+        };
+
+        function formatMoney(value) {
+            return '₹' + value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function saveAccount() {
+            if (account) {
+                account.balance = balance;
+                localStorage.setItem('bluewaveAccount', JSON.stringify(account));
+            }
+        }
+
+        function renderAccount() {
+            if (!account) return;
+            balanceElement.textContent = formatMoney(balance);
+            savingsElement.textContent = formatMoney(balance);
+            accountNumberElement.textContent = account.accountNumber;
+            accountHolderElement.textContent = account.name;
+            accountTypeElement.textContent = account.type + ' • Account holder';
+            document.querySelector('.account-chip').textContent = 'Account ' + account.accountNumber;
+            transactionList.innerHTML = '';
+            (account.transactions || []).forEach((transaction) => addTransaction(transaction.name, transaction.amount, transaction.type, transaction.time));
+        }
+
+        function openAction(actionName) {
+            if (!account && actionName !== 'open-account') {
+                actionName = 'open-account';
+            }
+            const action = actionDetails[actionName];
+            if (!action) return;
+            modalTitle.textContent = action.title;
+            form.innerHTML = action.fields + '<button class="primary" type="submit">' + action.submit + '</button>';
+            form.dataset.action = actionName;
+            formMessage.textContent = '';
+            modal.classList.add('is-open');
+            form.querySelector('input, select').focus();
+        }
+
+        function closeAction() {
+            modal.classList.remove('is-open');
+            form.reset();
+        }
+
+        function addTransaction(name, amount, type, time) {
+            const item = document.createElement('li');
+            item.innerHTML = '<div><span class="txn-name"></span><span class="txn-time"></span></div><span class="' + type + '"></span>';
+            item.querySelector('.txn-name').textContent = name;
+            item.querySelector('.txn-time').textContent = time || 'Just now';
+            item.querySelector('.' + type).textContent = (type === 'credit' ? '+' : '-') + formatMoney(amount);
+            transactionList.prepend(item);
+        }
+
+        document.querySelectorAll('[data-action]').forEach((button) => {
+            button.addEventListener('click', () => openAction(button.dataset.action));
+        });
+
+        document.querySelector('.close-modal').addEventListener('click', closeAction);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeAction();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.classList.contains('is-open')) closeAction();
+        });
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const data = new FormData(form);
+            const actionName = form.dataset.action;
+            const amount = Number(data.get('amount'));
+
+            if (actionName === 'deposit') {
+                balance = Math.round((balance + amount) * 100) / 100;
+                addTransaction(data.get('source'), amount, 'credit');
+                account.transactions = account.transactions || [];
+                account.transactions.unshift({ name: data.get('source'), amount, type: 'credit', time: 'Just now' });
+                balanceElement.textContent = formatMoney(balance);
+                savingsElement.textContent = formatMoney(balance);
+                saveAccount();
+                formMessage.textContent = 'Deposit completed successfully.';
+            } else if (actionName === 'withdraw' || actionName === 'transfer') {
+                if (amount > balance) {
+                    formMessage.textContent = 'Insufficient balance for this transaction.';
+                    return;
+                }
+                balance = Math.round((balance - amount) * 100) / 100;
+                const name = actionName === 'transfer' ? 'Transfer to ' + data.get('recipient') : data.get('purpose');
+                addTransaction(name, amount, 'debit');
+                account.transactions = account.transactions || [];
+                account.transactions.unshift({ name, amount, type: 'debit', time: 'Just now' });
+                balanceElement.textContent = formatMoney(balance);
+                savingsElement.textContent = formatMoney(balance);
+                saveAccount();
+                formMessage.textContent = actionName === 'transfer' ? 'Funds transferred successfully.' : 'Withdrawal completed successfully.';
+            } else if (actionName === 'open-account') {
+                balance = Math.round((amount || 0) * 100) / 100;
+                account = {
+                    name: data.get('name'),
+                    type: data.get('type'),
+                    mobile: data.get('mobile'),
+                    accountNumber: 'ACC ' + Math.floor(100000 + Math.random() * 900000),
+                    balance,
+                    transactions: []
+                };
+                if (balance > 0) {
+                    account.transactions.push({ name: 'Opening deposit', amount: balance, type: 'credit', time: 'Just now' });
+                }
+                saveAccount();
+                renderAccount();
+                formMessage.textContent = 'Account created. Your portal is ready.';
+            } else {
+                account.name = data.get('name');
+                account.mobile = data.get('mobile');
+                saveAccount();
+                renderAccount();
+                formMessage.textContent = 'Account details updated successfully.';
+            }
+
+            form.querySelector('button[type="submit"]').disabled = true;
+            setTimeout(closeAction, 700);
+        });
+
+        renderAccount();
+        if (!account) openAction('open-account');
+    </script>
+</body>
+</html>
